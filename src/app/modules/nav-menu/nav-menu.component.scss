@@ -1,0 +1,14 @@
+md-nav-list {
+    a {
+        md-icon {
+            &.icon-left {
+                margin-right: 24px;
+                margin-left: 0;
+            }
+
+            &.icon-right {
+                margin: 0;
+            }
+        }
+    }
+}

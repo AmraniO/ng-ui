@@ -1,0 +1,22 @@
+<md-nav-list>  
+    <div *ngFor="let nc of navCategories">
+        <a md-list-item 
+            (click)="onToggle(nc)">
+            <md-icon class="icon-left">{{ nc.icon }}</md-icon>
+            <span>{{ nc.label }}</span>
+            <span fxFlex></span>
+            <md-icon>{{ nc.open ? "arrow_drop_down" : "arrow_left" }}</md-icon>
+        </a>
+
+        <div *ngFor="let nav of nc.navs">
+            <a md-list-item 
+                *ngIf="nc.open" 
+                (click)="onOpenNav(nav)">
+                <md-icon class="icon-left"></md-icon>
+                <span>{{ nav.label }}</span>                
+            </a>
+        </div>   
+
+    </div>    
+    <md-divider></md-divider>
+</md-nav-list>
