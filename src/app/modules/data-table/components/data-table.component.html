@@ -1,0 +1,156 @@
+<div class="mat-elevation-z8">
+  <md-sidenav-container>
+    <md-sidenav mode="over" align="end" #snSearch>
+      <div>
+        <!-- Quick Search Select -->
+        <div>
+          <md-select placeholder="Quick Search" [(ngModel)]="searchedFieldId">
+            <md-option *ngFor="let field of searchableFields" [value]="field?.id">
+              {{ field?.label }}
+            </md-option>
+          </md-select>
+        </div>
+        <br><br>
+        <!-- Operator -->
+        <div>
+          <md-select placeholder="Operator" [(ngModel)]="logicalOperatorId">
+            <md-option *ngFor="let lo of logicalOperators" [value]="lo?.id">
+              {{ lo?.label }}
+            </md-option>
+          </md-select>
+        </div>
+        <br>
+        <!-- Searched Field -->
+        <div>
+          <md-input-container>
+            <input mdInput [(ngModel)]="searchedValue" placeholder="Value"
+              (keydown.enter)="onSearch(); snSearch.close();">
+          </md-input-container>
+        </div>
+          
+        <!-- Search & Reset -->
+        <div>
+          <button md-button 
+            (click)="onReset(); snSearch.close();">
+            Reset
+          </button>
+          <button md-button color="primary"
+            (click)="onSearch(); snSearch.close();">
+            Search
+          </button>
+        </div>          
+      </div>    
+    </md-sidenav>  
+
+    <table>
+      <thead>
+        <tr>
+          <th [attr.colspan]="visibleFields?.length">
+            <h2>{{ panel?.label }}</h2>          
+          </th>
+        </tr>
+        <tr>
+          <td [attr.colspan]="visibleFields?.length">       
+            <div>       
+              <div></div>   
+              <div>
+                <!-- Add -->
+                <button md-icon-button
+                  (click)="onAdd()">
+                  <md-icon class="md-24">add</md-icon>
+                </button>
+
+                <!-- Remove -->
+                <button md-icon-button
+                  [disabled]="selectedDataRows.length === 0"
+                  (click)="onRemove()">
+                  <md-icon class="md-24">remove</md-icon>
+                </button>
+
+                <!-- Refresh -->
+                <button md-icon-button (click)="onRefresh()">
+                  <md-icon class="md-24">refresh</md-icon>
+                </button>
+
+                <!-- Search -->
+                <button md-icon-button (click)="snSearch.open()">
+                  <md-icon class="md-24">search</md-icon>
+                </button>
+
+                <!-- Actions -->
+                <button md-icon-button [mdMenuTriggerFor]="menuAction">
+                  <md-icon>more_vert</md-icon>
+                </button>
+                <md-menu x-position="before" #menuAction="mdMenu">
+                  <button md-menu-item (click)="onSelectAllRows()">Select All</button>
+                  <button md-menu-item (click)="onDeselectAllRows()">Deselect All</button>
+                  <button md-menu-item (click)="onReload()">Reload</button>
+                </md-menu>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th *ngFor="let field of visibleFields"
+              (click)="onSort(field?.id)">
+            {{ field?.label }} 
+            <span [ngStyle]="{'visibility': sortFieldId === field?.id ? 'visible' : 'hidden'}">            
+              <md-icon class="md-24">{{ sortAsc ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</md-icon>
+            </span>
+          </th>      
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dr of dataPage" 
+            (click)="onSelectDataRow(dr, $event)"
+            (dblclick)="onSelectDataRow(dr, $event); onEdit()"
+            [class.is-selected]="isRowHighlighted(dr)">
+          <td *ngFor="let field of visibleFields">
+            {{ dr[field?.id] }}
+          </td>
+        </tr>    
+      </tbody>
+      <tfoot>   
+        <tr>
+          <td [attr.colspan]="visibleFields?.length">    
+            <div *ngIf="dataSet?.length > 0">
+                <div>
+                  <span [ngStyle]="{'visibility': selectedDataRows?.length > 0 ? 'visible' : 'hidden'}">
+                    <strong>{{ selectedDataRows?.length }}</strong> selected items
+                  </span>
+                </div>
+
+                <div>
+                  Items per page:
+                </div>
+
+                <div>
+                  <md-select [(ngModel)]="pageSize" (change)="onRefresh();" class="mat-select-trigger">
+                    <md-option *ngFor="let size of pageSizes" [value]="size">{{ size }}</md-option>
+                  </md-select>
+                </div>
+                             
+                <div>{{ rowFrom + 1 }} - {{ rowTo > dataSet?.length ? dataSet?.length : rowTo }} of {{ dataSet?.length }}</div>
+
+                <button md-icon-button                    
+                    [disabled]="isBOP"
+                    (click)="onPagingPrevious()">
+                    <md-icon class="md-24">keyboard_arrow_left</md-icon>
+                </button>
+
+                <button md-icon-button
+                    [disabled]="isEOP"
+                    (click)="onPagingNext()">
+                    <md-icon class="md-24">keyboard_arrow_right</md-icon>
+                </button>
+
+            </div>
+            <div *ngIf="dataSet?.length == 0" class="no-data">
+              No data available!
+            </div>
+          </td>
+        </tr>               
+        </tfoot>
+    </table>
+  </md-sidenav-container>  
+</div>

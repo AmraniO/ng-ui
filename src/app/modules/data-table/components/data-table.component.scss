@@ -1,0 +1,126 @@
+table {
+    background-color: #fff;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    color: rgba(0,0,0,.54);;
+    display: table;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-size: 13px;
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+
+    tbody {
+        color: rgba(0,0,0,.87);
+    }
+}
+
+table thead {
+    border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+table th {
+    color: rgba(0,0,0,.54);
+    box-sizing: border-box;
+    height: 48px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 24px;
+    padding: 0 18px 12px 18px;
+    position: relative;
+    text-align: left;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space:nowrap;    
+}
+
+table tbody tr {
+    display: table-row;
+    position: relative;
+    height: 48px;
+    transition-duration: .28s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-property: background-color;
+}
+
+table tbody tr:hover {
+    background-color: #EEEEEE;
+}
+
+table td {
+    position: relative;
+    height: 48px;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    padding: 12px 18px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+table td:last-child {
+    width: 99%;
+}
+
+tr.is-selected {
+    background-color: #e0e0e0;
+}
+
+table {
+    cursor: default;
+
+    thead tr td:first-child {
+        border-bottom: none;
+        border-top: none;
+    }
+
+    thead tr td > div {
+        display: flex;    
+
+        div {
+            flex: 1;
+        }
+
+        div:last-child {
+            flex: 1;
+            text-align: right;
+        }        
+    }
+
+    tfoot tr td > div {
+        align-items: center;
+        display: flex;            
+        justify-content: flex-end;
+        min-height: 56px;
+        padding: 0 8px;
+
+        div:first-child {
+            flex: 1;         
+        }
+
+        div:nth-child(3) {
+            margin: 0 4px;
+        }  
+
+        div:nth-child(4) {
+            margin: 0 32px;
+        }  
+        
+        /deep/ .mat-select-trigger {
+            font-size: 12px;
+            min-width: 50px;
+        }
+    }
+
+    thead tr th {
+        span > md-icon {
+            position: relative;
+            top: 7px;
+        }
+    }
+}
+
+md-sidenav-container md-sidenav > div {
+    margin-top: 20px;
+    padding: 20px;
+}

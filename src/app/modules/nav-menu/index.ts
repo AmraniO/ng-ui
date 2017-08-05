@@ -4,7 +4,7 @@ import { MaterialModule } from "@angular/material";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import "hammerjs";
 
-import { NavMenuComponent } from "./nav-menu.component";
+import { NavMenuComponent } from "./components/nav-menu.component";
 
 @NgModule({
     imports: [
