@@ -31,6 +31,7 @@ export class DataTableComponent extends Action implements OnInit {
   selectedDataRows: any[] = [];
   currentPage: number = 1;
   searchedFieldId: string;
+  logicalOperators: LOV[] = [];
   logicalOperatorId: string;
   searchedValue: string;
   searchableFields: Field[];
@@ -46,6 +47,32 @@ export class DataTableComponent extends Action implements OnInit {
   ngOnInit() {
     this.searchedFieldId = this.defaultSearchedFieldId;
     this.sortFieldId = this.defaultSortFieldId;
+    this.logicalOperators = [
+      {
+          key: 1,
+          id: "equal",
+          label: "Equal",
+          group: "LOGICAL_OPERATOR"
+      },
+      {
+          key: 2,
+          id: "match",
+          label: "Match",
+          group: "LOGICAL_OPERATOR"
+      },
+      {
+          key: 4,
+          id: "greaterThan",
+          label: "Greater Than",
+          group: "LOGICAL_OPERATOR"
+      },
+      {
+          key: 5,
+          id: "lessThan",
+          label: "Less Than",
+          group: "LOGICAL_OPERATOR"
+      }
+    ] 
     this.logicalOperatorId = this.defaultLogicalOperatorId;
     this.sortAsc = this.defaultSortAsc;
     this.pageSize = this.defaultPageSize;
@@ -58,9 +85,6 @@ export class DataTableComponent extends Action implements OnInit {
 
   @Input()
   data: any[];
-
-  @Input()
-  logicalOperators: LOV[];
 
   @Input()
   defaultPageSize: number;
