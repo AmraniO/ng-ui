@@ -113,6 +113,12 @@ export class DataTableComponent extends Action implements OnInit {
   @Output()
   remove: EventEmitter<any[]> = new EventEmitter();
 
+  @Output()
+  refresh: EventEmitter<any> = new EventEmitter();
+
+  @Output()
+  reload: EventEmitter<any> = new EventEmitter();
+
   get rowFrom(): number {
     return this.rowTo - this.pageSize;
   }
@@ -143,7 +149,7 @@ export class DataTableComponent extends Action implements OnInit {
 
   private _refreshPanel() {
     this.searchableFields = this.panel.panelDetails.filter(pd => pd.isSearchable).map(pd => pd.field);
-    this.visibleFields = this.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);
+    this.visibleFields = this.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);    
   }
 
   isRowHighlighted(dataRow: any): boolean {
@@ -196,11 +202,13 @@ export class DataTableComponent extends Action implements OnInit {
   }
 
   onReload() {
+    this.reload.emit({});
     this._refreshPanel();
     this._refreshData();
   }
 
   onRefresh() {
+    this.refresh.emit({});
     this._refreshData();
   }
   
