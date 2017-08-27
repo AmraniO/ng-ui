@@ -4,7 +4,7 @@
  *
  * Use of this source code is governed by an MIT-style license
  */
-import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { MdDialog, MdSnackBar } from '@angular/material';
 
 import { DialogRemoveComponent } from "./dialog-remove.component";
@@ -26,7 +26,7 @@ import { Action } from "../utils/action.util";
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./data-table.component.scss']
 })
-export class DataTableComponent extends Action implements OnInit {      
+export class DataTableComponent extends Action implements OnInit, OnChanges {      
   dataSet: any[];
   dataPage: any[];
   selectedDataRows: any[] = [];
@@ -42,7 +42,7 @@ export class DataTableComponent extends Action implements OnInit {
   pageSize: number = 5;
 
   constructor(public dialog: MdDialog, public snackBar: MdSnackBar) { 
-    super();     
+    super();    
   }
 
   ngOnInit() {
@@ -76,8 +76,10 @@ export class DataTableComponent extends Action implements OnInit {
     ] 
     this.logicalOperatorId = this.defaultLogicalOperatorId;
     this.sortAsc = this.defaultSortAsc;
-    this.pageSize = this.defaultPageSize;
+    this.pageSize = this.defaultPageSize;        
+  }
 
+  ngOnChanges() {
     this._refreshPanel();
     this._refreshData();
   }
@@ -86,7 +88,7 @@ export class DataTableComponent extends Action implements OnInit {
   panel: Panel;
 
   @Input()
-  data: any[];
+  data: any = [];
 
   @Input()
   defaultPageSize: number;
@@ -143,15 +145,19 @@ export class DataTableComponent extends Action implements OnInit {
     return this.currentPage == this.limitPage;
   }
 
-  private _refreshData() {    
-    this.dataSet = this.search(this.data, this.searchedFieldId, this.searchedValue, this.logicalOperatorId);
-    this.dataSet = this.sort(this.dataSet, this.sortFieldId, this.sortAsc);    
-    this.dataPage = this.dataSet.slice(this.rowFrom, this.rowTo);    
+  private _refreshData() {
+    if (this.data) {
+      this.dataSet = this.search(this.data, this.searchedFieldId, this.searchedValue, this.logicalOperatorId);
+      this.dataSet = this.sort(this.dataSet, this.sortFieldId, this.sortAsc);    
+      this.dataPage = this.dataSet.slice(this.rowFrom, this.rowTo);
+    }  
   }
 
   private _refreshPanel() {
-    this.searchableFields = this.panel.panelDetails.filter(pd => pd.isSearchable).map(pd => pd.field);
-    this.visibleFields = this.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);    
+    if (this.panel) {
+      this.searchableFields = this.panel.panelDetails.filter(pd => pd.isSearchable).map(pd => pd.field);
+      this.visibleFields = this.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);
+    }
   }
 
   isRowHighlighted(dataRow: any): boolean {
@@ -203,15 +209,15 @@ export class DataTableComponent extends Action implements OnInit {
     this._refreshData();
   }
 
-  onReload() {
+  onReload() {    
+    this.reload.emit();
     this._refreshPanel();
     this._refreshData();
-    this.reload.emit();
   }
 
   onRefresh() {
-    this._refreshData();
     this.refresh.emit({});
+    this._refreshData();
   }
   
   onPagingPrevious() {
