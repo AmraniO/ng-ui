@@ -125,7 +125,7 @@
                 </div>
 
                 <div>
-                  <md-select [(ngModel)]="pageSize" (change)="onRefresh();" class="mat-select-trigger">
+                  <md-select [(ngModel)]="pageSize" (change)="_refreshData();" class="mat-select-trigger">
                     <md-option *ngFor="let size of pageSizes" [value]="size">{{ size }}</md-option>
                   </md-select>
                 </div>
