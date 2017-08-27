@@ -4,7 +4,7 @@
  *
  * Use of this source code is governed by an MIT-style license
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MdDialog, MdSnackBar } from '@angular/material';
 
 import { DialogRemoveComponent } from "./dialog-remove.component";
@@ -23,6 +23,7 @@ import { Action } from "../utils/action.util";
 @Component({
   selector: 'ngu-data-table',
   templateUrl: './data-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./data-table.component.scss']
 })
 export class DataTableComponent extends Action implements OnInit {      
@@ -77,7 +78,8 @@ export class DataTableComponent extends Action implements OnInit {
     this.sortAsc = this.defaultSortAsc;
     this.pageSize = this.defaultPageSize;
 
-    this.onReload();
+    this._refreshPanel();
+    this._refreshData();
   }
 
   @Input()
@@ -202,14 +204,14 @@ export class DataTableComponent extends Action implements OnInit {
   }
 
   onReload() {
-    this.reload.emit({});
     this._refreshPanel();
     this._refreshData();
+    this.reload.emit();
   }
 
   onRefresh() {
-    this.refresh.emit({});
     this._refreshData();
+    this.refresh.emit({});
   }
   
   onPagingPrevious() {
