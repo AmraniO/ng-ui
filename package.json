@@ -2,7 +2,7 @@
   
     "name": "amr-ng-ui",
     "description": "Material Design smart components for Angular",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "license": "MIT",
     "scripts": {
       "ng": "ng",
