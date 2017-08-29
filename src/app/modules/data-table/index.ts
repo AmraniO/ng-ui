@@ -7,6 +7,7 @@ import { MaterialModule } from "@angular/material";
 import { DataTableComponent } from "./components/data-table.component";
 import { DialogRemoveComponent } from "./components/dialog-remove.component";
 import { FilterPipe } from "./pipes/filter.pipe";
+import { DataService } from "./services/data.service";
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { FilterPipe } from "./pipes/filter.pipe";
     DataTableComponent   
   ],
   providers: [
+    DataService
   ]
 })
 export class DataTableModule { }
