@@ -1,0 +1,18 @@
+<!-- OK -->
+<div *ngIf="data.dialogButton == 'OK'">
+    <h1 md-dialog-title class="mat-dialog-title {{ data.style }}">{{ data.title }}</h1>
+    <div md-dialog-content>{{ data.content }}</div>
+    <div md-dialog-actions>
+        <button md-button [color]="data.style" (click)="dialogRef.close('OK')">OK</button>
+    </div>
+</div>
+
+<!-- Yes / Cancel -->
+<div *ngIf="data.dialogButton == 'YES_CANCEL'">
+    <h1 md-dialog-title class="mat-dialog-title {{ data.style }}">{{ data.title }}</h1>
+    <div md-dialog-content>{{ data.content }}</div>
+    <div md-dialog-actions>
+        <button md-button [color]="data.style" (click)="dialogRef.close('YES')">YES</button>
+        <button md-button (click)="dialogRef.close('CANCEL')">CANCEL</button>
+    </div>
+</div>
