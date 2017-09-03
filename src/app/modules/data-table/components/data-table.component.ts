@@ -8,6 +8,10 @@ import { Component, ChangeDetectionStrategy, OnInit, OnChanges, Input, Output, E
 import { MdDialog, MdSnackBar } from '@angular/material';
 
 import { DialogRemoveComponent } from "./dialog-remove.component";
+import { DialogService } from "../../dialog-box/services/dialog.service";
+
+import { DialogBoxComponent } from "../../dialog-box/components";
+import { DialogButtonsEnum, DialogActionsEnum } from "../../dialog-box/enums";
 
 import { Panel } from "../models/panel.model";
 import { Field } from "../models/field.model";
@@ -41,7 +45,7 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
   sortAsc: boolean = true;
   pageSize: number = 5;
 
-  constructor(public dialog: MdDialog, public snackBar: MdSnackBar) { 
+  constructor(public dialog: MdDialog, public dialogService: DialogService) { 
     super();    
   }
 
@@ -193,9 +197,14 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
   }
 
   onRemove() {
-    this.openDialog(DialogRemoveComponent, "Remove", () => {
-      this.remove.emit(this.selectedDataRows);
-    });
+    let data = { data: { title: "DELETE", content: "Are you sure you want to delete these records?", dialogButton: DialogButtonsEnum.YesCancel, style: "warn" } };
+    this.dialogService.openDialog(data)
+      .subscribe(action => {
+        if (action == DialogActionsEnum.Yes) {
+          this.remove.emit(this.selectedDataRows);
+          this.selectedDataRows = [];
+        }
+      });
   }
 
   onReset() {
@@ -234,19 +243,13 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
     }
   }
 
-  openDialog(T: any, doAction: string, callback) {    
-    let dialogRef = this.dialog.open(T);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === doAction) {   
-        callback();
-      } 
-    });
-  }  
-
-  openSnackBar(message: string) {
-    this.snackBar.open(message, "Dismiss", {
-      duration: 2000
-    });
-  }
+  // openDialog(T: any, doAction: string, callback) {    
+  //   let dialogRef = this.dialog.open(T);
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result === doAction) {   
+  //       callback();
+  //     } 
+  //   });
+  // }
 
 }
