@@ -9,12 +9,16 @@ import { DialogRemoveComponent } from "./components/dialog-remove.component";
 import { FilterPipe } from "./pipes/filter.pipe";
 import { DataService } from "./services/data.service";
 
+import { DialogBoxModule } from "../dialog-box";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     BrowserAnimationsModule,  
-    MaterialModule
+    MaterialModule,
+
+    DialogBoxModule
   ],
   entryComponents: [
     DialogRemoveComponent
