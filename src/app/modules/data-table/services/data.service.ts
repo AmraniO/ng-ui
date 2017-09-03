@@ -6,11 +6,17 @@ import { HttpClient } from "@angular/common/http";
 export class DataService {
     constructor(public http: HttpClient) { }
 
-    getPanel(): Observable<any> {
-        return this.http.get("http://localhost:51203/api/panels/1");
+    API_URI: string;
+
+    getPanel(key: number): Observable<any> {
+        return this.http.get(`${this.API_URI}api/panels/${key}`);
     }
 
-    getData(): Observable<any> {
-        return this.http.get("http://localhost:51203/api/customers");
+    getData(entity: string): Observable<any> {
+        return this.http.get(`${this.API_URI}api/${entity}`);
+    }
+
+    remove(key: number): Observable<any> {
+        return this.http.delete(`${this.API_URI}api/customers/${key}`);
     }
 }
