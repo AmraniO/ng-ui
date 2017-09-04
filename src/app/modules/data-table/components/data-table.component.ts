@@ -7,17 +7,10 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { MdDialog, MdSnackBar } from '@angular/material';
 
-import { DialogRemoveComponent } from "./dialog-remove.component";
-import { DialogService } from "../../dialog-box/services/dialog.service";
-
 import { DialogBoxComponent } from "../../dialog-box/components";
-import { DialogButtonsEnum, DialogActionsEnum } from "../../dialog-box/enums";
-
-import { Panel } from "../models/panel.model";
-import { Field } from "../models/field.model";
-import { LOV } from "../models/lov.model";
-
-import { Action } from "../utils/action.util";
+import { Panel, Field, LOV } from "../../core/models";
+import { ActionService, DialogService } from "../../core/services";
+import { DialogButtonsEnum, DialogActionsEnum } from "../../core/enums";
 
 /**
  * Component of DataTable 
@@ -25,12 +18,12 @@ import { Action } from "../utils/action.util";
  * @stable
  */
 @Component({
-  selector: 'ngu-data-table',
+  selector: 'nui-data-table',
   templateUrl: './data-table.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./data-table.component.scss']
 })
-export class DataTableComponent extends Action implements OnInit, OnChanges {      
+export class DataTableComponent implements OnInit, OnChanges {      
   dataSet: any[];
   dataPage: any[];
   selectedDataRows: any[] = [];
@@ -45,8 +38,8 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
   sortAsc: boolean = true;
   pageSize: number = 5;
 
-  constructor(public dialog: MdDialog, public dialogService: DialogService) { 
-    super();    
+  constructor(public dialog: MdDialog, public actionService: ActionService, public dialogService: DialogService) { 
+       
   }
 
   ngOnInit() {
@@ -151,8 +144,8 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
 
   private _refreshData() {
     if (this.data) {
-      this.dataSet = this.search(this.data, this.searchedFieldId, this.searchedValue, this.logicalOperatorId);
-      this.dataSet = this.sort(this.dataSet, this.sortFieldId, this.sortAsc);    
+      this.dataSet = this.actionService.search(this.data, this.searchedFieldId, this.searchedValue, this.logicalOperatorId);
+      this.dataSet = this.actionService.sort(this.dataSet, this.sortFieldId, this.sortAsc);    
       this.dataPage = this.dataSet.slice(this.rowFrom, this.rowTo);
     }  
   }
@@ -160,7 +153,7 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
   private _refreshPanel() {
     if (this.panel) {
       this.searchableFields = this.panel.panelDetails.filter(pd => pd.isSearchable).map(pd => pd.field);
-      this.visibleFields = this.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);
+      this.visibleFields = this.actionService.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);
     }
   }
 
@@ -242,14 +235,4 @@ export class DataTableComponent extends Action implements OnInit, OnChanges {
       this._refreshData();
     }
   }
-
-  // openDialog(T: any, doAction: string, callback) {    
-  //   let dialogRef = this.dialog.open(T);
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result === doAction) {   
-  //       callback();
-  //     } 
-  //   });
-  // }
-
 }

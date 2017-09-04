@@ -4,10 +4,9 @@ import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MaterialModule } from "@angular/material";
 
-import { DataTableComponent } from "./components/data-table.component";
-import { DialogRemoveComponent } from "./components/dialog-remove.component";
-import { FilterPipe } from "./pipes/filter.pipe";
-
+import { DataTableComponent } from "./components";
+import { ActionService, DialogService } from "../core/services";
+import { FilterPipe } from "../core/pipes";
 import { DialogBoxModule } from "../dialog-box";
 
 @NgModule({
@@ -20,19 +19,18 @@ import { DialogBoxModule } from "../dialog-box";
     DialogBoxModule
   ],
   entryComponents: [
-    DialogRemoveComponent
+    
   ],
   declarations: [
     DataTableComponent,
-    DialogRemoveComponent,
-
     FilterPipe
   ],
   exports: [
     DataTableComponent   
   ],
   providers: [
-    
+    ActionService,
+    DialogService
   ]
 })
 export class DataTableModule { }

@@ -1,9 +1,11 @@
+import { Injectable } from "@angular/core";
 import { LogicalOperatorEnum } from "../enums/logical-operator.enum";
 
 /**
- * Action
+ * Action Service
  */
-export class Action {
+@Injectable()
+export class ActionService {
     constructor() {      
     }
 
