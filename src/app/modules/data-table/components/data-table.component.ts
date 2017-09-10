@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy, OnInit, OnChanges, Input, Output, E
 import { MdDialog, MdSnackBar } from '@angular/material';
 
 import { DialogBoxComponent } from "../../dialog-box/components";
-import { Panel, Field, LOV } from "../../core/models";
+import { Panel, Section, Field, LOV } from "../../core/models";
 import { ActionService, DialogService } from "../../core/services";
 import { DialogButtonsEnum, DialogActionsEnum } from "../../core/enums";
 
@@ -85,6 +85,9 @@ export class DataTableComponent implements OnInit, OnChanges {
   panel: Panel;
 
   @Input()
+  sectionKey: number;
+
+  @Input()
   data: any = [];
 
   @Input()
@@ -152,9 +155,19 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   private _refreshPanel() {
     if (this.panel) {
-      this.searchableFields = this.panel.panelDetails.filter(pd => pd.isSearchable).map(pd => pd.field);
-      this.visibleFields = this.actionService.sort(this.panel.panelDetails.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);
+      let section: Section = this.panel.sections.find(s => s.key === this.sectionKey);
+      this.searchableFields = section.controls.filter(c => c.isSearchable).map(c => c.field);
+      this.visibleFields = this.actionService.sort(section.controls.filter(pd => pd.isVisible), "orderNo", true).map(pd => pd.field);
     }
+  }
+
+  getLabel(field: Field, dr: any): string {
+    let value = dr[field.id];
+    if (field.type === "select") {
+      let fieldFound = field.options.find(o => o.value === value)
+      value = (fieldFound ? fieldFound.label : "?N/F?");
+    }
+    return value;
   }
 
   isRowHighlighted(dataRow: any): boolean {
