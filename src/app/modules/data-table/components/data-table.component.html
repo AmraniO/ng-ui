@@ -106,7 +106,7 @@
             (dblclick)="onSelectDataRow(dr, $event); onEdit()"
             [class.is-selected]="isRowHighlighted(dr)">
           <td *ngFor="let field of visibleFields">
-            {{ dr[field?.id] }}
+            {{ getLabel(field, dr) }}            
           </td>
         </tr>    
       </tbody>
