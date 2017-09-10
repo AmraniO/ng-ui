@@ -1,10 +1,10 @@
 import { Entity } from "./entity.model";
-import { PanelDetail } from "./panel-detail.model";
+import { Section } from "./section.model";
 
 export interface Panel {
     key: number;
-    label: string;
-    panelDetails: PanelDetail[];
+    id: string;    
     entity: Entity;
     entityKey: number;
+    sections: Section[];
 }
